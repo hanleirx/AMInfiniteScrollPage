@@ -27,3 +27,5 @@
 ### Only Use Three ImageView
 
 ![image](http://7xpety.com1.z0.glb.clouddn.com/分页实现思路.png)
+
+#### Click [here](http://lizhaoloveit.github.io/2014/04/16/OC-Demo-%E6%97%A0%E9%99%90%E5%BE%AA%E7%8E%AF%E5%88%86%E9%A1%B5%E5%AE%9E%E7%8E%B0/) to find more detail
