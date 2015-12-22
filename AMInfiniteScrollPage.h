@@ -1,6 +1,11 @@
-![image](http://7xpeqq.com1.z0.glb.clouddn.com/无限循环分页.gif)
+//
+//  AMInfiniteScrollPage.h
+//  AMInfiniteScrollPage
+//
+//  Created by 李朝 on 15/12/22.
+//  Copyright © 2015年 ammar. All rights reserved.
+//
 
-```
 #import <UIKit/UIKit.h>
 
 @interface AMInfiniteScrollPage : UIView
@@ -21,9 +26,3 @@
 @property (assign, nonatomic) CGPoint pageControllerCenter;
 
 @end
-
-```
-
-### Only Use Three ImageView
-
-![image](http://7xpety.com1.z0.glb.clouddn.com/分页实现思路.png)
