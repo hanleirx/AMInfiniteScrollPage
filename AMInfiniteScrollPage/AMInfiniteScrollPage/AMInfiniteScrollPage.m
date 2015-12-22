@@ -155,15 +155,6 @@ static int const imageViewCount = 3;
     [self.scrollView setContentOffset:CGPointMake(2 * self.scrollView.frame.size.width, 0) animated:YES];
 }
 
-/**
- * 停止定时器
- */
-- (void)stopTimer
-{
-    [self.timer invalidate];
-    self.timer = nil;
-}
-
 #pragma mark - 添加图片
 
 /**
@@ -252,11 +243,20 @@ static int const imageViewCount = 3;
 }
 
 /**
- * scrollView 马上被用户拖拽时
+ * scrollView 用户拖拽之前会调用
  */
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     [self stopTimer];
+}
+
+/**
+ * 停止定时器
+ */
+- (void)stopTimer
+{
+    [self.timer invalidate];
+    self.timer = nil;
 }
 
 /**

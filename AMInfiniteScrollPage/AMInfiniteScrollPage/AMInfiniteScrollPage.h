@@ -13,7 +13,7 @@
 /** 图片名 */
 @property (strong, nonatomic) NSArray *imageNames;
 
-/** 设置自动跳转时间 */
+/** 设置自动滚动时间间隔 */
 @property (assign, nonatomic) NSTimeInterval timeInterval;
 
 /** 设置右下角点点的选中颜色 */
