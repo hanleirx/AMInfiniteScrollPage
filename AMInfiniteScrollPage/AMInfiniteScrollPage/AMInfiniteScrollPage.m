@@ -88,11 +88,11 @@ static int const imageViewCount = 3;
     }
     
     // 设置 pageController
-    CGFloat pageWidth = 80;
-    CGFloat pageHeight = 20;
-    CGFloat pageX = self.bounds.size.width - pageWidth - 5;
-    CGFloat pageY = self.bounds.size.height - pageHeight - 10;
-    self.pageController.frame = CGRectMake(pageX, pageY, pageWidth, pageHeight);
+    if (!CGPointEqualToPoint(self.pageController.center, CGPointZero)) { // 如果用户设置尺寸和位置
+        self.pageController.center = self.pageControllerCenter;
+    } else { // 使用默认
+        self.pageController.center = CGPointMake(0.83 * self.bounds.size.width, 0.9 * self.bounds.size.height);
+    }
     
     // 设置内容
     [self addImageToImageView];
@@ -110,6 +110,26 @@ static int const imageViewCount = 3;
     
     // 更新 imageView 图片
     [self addImageToImageView];
+}
+
+/**
+ * 设置右下角点点选中时的颜色
+ */
+- (void)setCurrentPageIndicatorTintColor:(UIColor *)currentPageIndicatorTintColor
+{
+    if (currentPageIndicatorTintColor != nil) {
+        self.pageController.currentPageIndicatorTintColor = currentPageIndicatorTintColor;
+    }
+}
+
+/**
+ * 设置右下角点点没选中时的颜色
+ */
+- (void)setPageIndicatorTintColor:(UIColor *)pageIndicatorTintColor
+{
+    if (pageIndicatorTintColor != nil) {
+        self.pageController.pageIndicatorTintColor = pageIndicatorTintColor;
+    }
 }
 
 
@@ -275,6 +295,9 @@ static int const imageViewCount = 3;
         UIPageControl *pageController = [[UIPageControl alloc] init];
         
         _pageController = pageController;
+        
+        // 单页时隐藏
+        pageController.hidesForSinglePage = YES;
         
         [self addSubview:pageController];
     }

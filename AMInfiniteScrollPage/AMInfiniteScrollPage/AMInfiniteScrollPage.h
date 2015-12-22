@@ -16,4 +16,13 @@
 /** 设置自动跳转时间 */
 @property (assign, nonatomic) NSTimeInterval timeInterval;
 
+/** 设置右下角点点的选中颜色 */
+@property (strong, nonatomic) UIColor *currentPageIndicatorTintColor;
+
+/** 设置右下角点点未选中时的颜色 */
+@property (strong, nonatomic) UIColor *pageIndicatorTintColor;
+
+/** 设置右下角点点的位置 */
+@property (assign, nonatomic) CGPoint pageControllerCenter;
+
 @end
