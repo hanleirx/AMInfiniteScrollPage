@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+// 设置代理
+@protocol AMInfiniteScrollPageDelegate;
+
 @interface AMInfiniteScrollPage : UIView
 
 /** 图片名 */
@@ -24,5 +27,17 @@
 
 /** 设置右下角点点的位置 */
 @property (assign, nonatomic) CGPoint pageControllerCenter;
+
+/** 代理 */
+@property (weak, nonatomic) id<AMInfiniteScrollPageDelegate> delegate;
+
+@end
+
+@protocol AMInfiniteScrollPageDelegate <NSObject>
+
+@optional
+
+- (void)infiniteScrollPage:(AMInfiniteScrollPage *)infiniteScrollPage didSelectedImageAtIndex:(NSInteger)index;
+
 
 @end

@@ -8,6 +8,7 @@
 
 #import "AMInfiniteScrollPage.h"
 
+
 static int const imageViewCount = 3;
 
 @interface AMInfiniteScrollPage () <UIScrollViewDelegate>
@@ -23,6 +24,8 @@ static int const imageViewCount = 3;
 
 /** 添加定时器 */
 @property (weak, nonatomic) NSTimer *timer;
+
+
 
 @end
 
@@ -60,10 +63,33 @@ static int const imageViewCount = 3;
     // 设置代理
     self.scrollView.delegate = self;
     
-    // 添加图片控件
+    // 添加按钮控件
     for (NSInteger i = 0; i < imageViewCount; i++) {
-        UIImageView *imageView = [[UIImageView alloc] init];
-        [self.scrollView addSubview:imageView];
+        
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        
+        // 默认是 YES，如果是 YES 按钮会在点击的时候变暗
+        button.adjustsImageWhenHighlighted = NO;
+        
+        
+        // 接受中间的按钮的点击事件
+        if (i == 1) {
+            [button addTarget:self action:@selector(didSelectedImage) forControlEvents:UIControlEventTouchUpInside];
+        }
+        
+        [self.scrollView addSubview:button];
+    }
+}
+
+/**
+ * 点击了 scrollView中的按钮
+ */
+- (void)didSelectedImage
+{
+    // 监听到了按钮点击 调用代理方法通知外界
+    if ([self.delegate respondsToSelector:@selector(infiniteScrollPage:didSelectedImageAtIndex:)]) {
+        
+        [self.delegate infiniteScrollPage:self didSelectedImageAtIndex:self.pageController.currentPage];
     }
 }
 
@@ -78,13 +104,12 @@ static int const imageViewCount = 3;
     self.scrollView.frame = self.bounds;
     self.scrollView.contentSize = CGSizeMake(self.bounds.size.width * imageViewCount, 0);
     
-    // 设置图片的尺寸和位置
+    // 设置图片按钮的尺寸和位置
     for (NSInteger i = 0; i < imageViewCount; i++) {
         
-        UIImageView *imageView = self.scrollView.subviews[i];
-        imageView.backgroundColor = [UIColor redColor];
+        UIButton *button = self.scrollView.subviews[i];
         
-        imageView.frame = CGRectMake(i * self.scrollView.frame.size.width, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height);
+        button.frame = CGRectMake(i * self.scrollView.frame.size.width, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height);
     }
     
     // 设置 pageController
@@ -95,7 +120,7 @@ static int const imageViewCount = 3;
     }
     
     // 设置内容
-    [self addImageToImageView];
+    [self addImageToButton];
 }
 
 
@@ -109,7 +134,7 @@ static int const imageViewCount = 3;
     self.pageController.currentPage = 0;
     
     // 更新 imageView 图片
-    [self addImageToImageView];
+    [self addImageToButton];
 }
 
 /**
@@ -158,17 +183,17 @@ static int const imageViewCount = 3;
 #pragma mark - 添加图片
 
 /**
- * 添加图片到 imageView 中去
+ * 添加图片到 button 的背景图片中去
  */
-- (void)addImageToImageView
+- (void)addImageToButton
 {
     // 清空当前 currentPages 数组
     [self.theCurrentPages removeAllObjects];
     
     for (NSInteger i = 0 ; i < imageViewCount; i++) {
         
-        // 取出 imageView
-        UIImageView *imageView = self.scrollView.subviews[i];
+        // 取出 button
+        UIButton *button = self.scrollView.subviews[i];
         
         // 取出当前页码
         NSInteger index = self.pageController.currentPage;
@@ -190,7 +215,7 @@ static int const imageViewCount = 3;
             index = 0;
         }
         
-        imageView.image = [UIImage imageNamed:self.imageNames[index]];
+        [button setBackgroundImage:[UIImage imageNamed:self.imageNames[index]] forState:UIControlStateNormal];
         [self.theCurrentPages addObject:@(index)];
     }
     
@@ -206,19 +231,19 @@ static int const imageViewCount = 3;
  */
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    // 找出中间的 imageView 的页码
+    // 找出中间的 button 的页码
     NSInteger cunrrentPage = 0;
     
     if (self.scrollView.contentOffset.x >= 0.5 * self.scrollView.contentSize.width) {
         
-        // 当向左划超过 imageView 一半的尺寸时
+        // 当向左划超过 button 一半的尺寸时
         cunrrentPage = [self.theCurrentPages[imageViewCount - 1] integerValue];
     } else if (self.scrollView.contentOffset.x >= 0.5 * self.scrollView.frame.size.width) {
         
-        // 当向左或者向右滑都未超过一半 imageView 的尺寸时
+        // 当向左或者向右滑都未超过一半 button 的尺寸时
         cunrrentPage = [self.theCurrentPages[imageViewCount - 2] integerValue];
     } else {
-        // 向右滑超过 imageView 一半的尺寸时
+        // 向右滑超过 button 一半的尺寸时
         cunrrentPage = [self.theCurrentPages[imageViewCount - 3] integerValue];
     }
     
@@ -231,7 +256,7 @@ static int const imageViewCount = 3;
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     // 更新状态
-    [self addImageToImageView];
+    [self addImageToButton];
 }
 
 /**
@@ -239,7 +264,7 @@ static int const imageViewCount = 3;
  */
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
-    [self addImageToImageView];
+    [self addImageToButton];
 }
 
 /**
@@ -317,3 +342,6 @@ static int const imageViewCount = 3;
 }
 
 @end
+
+
+

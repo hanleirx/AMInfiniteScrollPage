@@ -9,7 +9,7 @@
 #import "ViewController.h"
 #import "AMInfiniteScrollPage.h"
 
-@interface ViewController ()
+@interface ViewController () <AMInfiniteScrollPageDelegate>
 
 @end
 
@@ -20,6 +20,9 @@
     AMInfiniteScrollPage *page = [[AMInfiniteScrollPage alloc] init];
     page.imageNames = @[@"img_00", @"img_01", @"img_02", @"img_03", @"img_04"];
     page.frame = CGRectMake(30, 50, 300, 130);
+    
+    // 设置代理
+    page.delegate = self;
     
     // 设置自动跳转页面的间隔时间
     page.timeInterval = 1.5;
@@ -33,5 +36,13 @@
     
     [self.view addSubview:page];
 }
+
+#pragma mark - AMInfiniteScrollPageDelegate
+
+- (void)infiniteScrollPage:(AMInfiniteScrollPage *)infiniteScrollPage didSelectedImageAtIndex:(NSInteger)index
+{
+    NSLog(@"点击了%@的第%zd张图片", infiniteScrollPage, index);
+}
+
 
 @end
